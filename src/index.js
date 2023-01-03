@@ -13,6 +13,8 @@ function InputRange ({min = 0, max = 100} = {min: 0, max: 100}) {
     input.min = min
     input.max = max
     input.onkeyup = handlers.onkeyup
+    input.onpointerleave = handlers.onleave
+    input.onblur = handlers.onleave
     
     shadow.appendChild(input)
     shadow.adoptedStyleSheets = [sheet]
@@ -22,15 +24,20 @@ function InputRange ({min = 0, max = 100} = {min: 0, max: 100}) {
 
 const handlers = {
     onkeyup(e) {
+        if (compareWidth(e.target.min, e.target.value)) return
+        actions.ensureRange(e)
+    },
+    onleave(e) {
+        if (compareWidth(e.target.min, e.target.value)) return e.target.value = ''
         actions.ensureRange(e)
     }
+}
+function compareWidth(any1, any2) {
+    return any1.toString().length > any2.toString().length
 }
 const actions = {
     ensureRange(e) {
         const el = e.target
-        const len_min = el.min.toString().length
-        const len_typed = el.value.toString().length
-        if (len_typed < len_min) return
         const val = new Number(el.value)
         if (val > el.max) el.value = el.max
         else if (val < el.min) el.value = el.min
