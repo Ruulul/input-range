@@ -1,10 +1,6 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 const InputRange = require('..')
 
-const max_age = 150
-const age_input = InputRange({min: 0, max: max_age})
-const actual_year = 2022
-const year_input = InputRange({min: actual_year - max_age, max: actual_year})
 const page = document.createElement('div')
 page.innerHTML = `
     <h1> Demo input </h1>
@@ -15,8 +11,10 @@ page.innerHTML = `
         <year-input></year-input>
     </label>
 `
-page.querySelectorAll('age-input').forEach(e=>e.replaceWith(age_input))
-page.querySelectorAll('year-input').forEach(e=>e.replaceWith(year_input))
+const max_age = 150
+const actual_year = 2022
+page.querySelectorAll('age-input').forEach(e=>e.replaceWith(InputRange({min: 0, max: max_age})))
+page.querySelectorAll('year-input').forEach(e=>e.replaceWith(InputRange({min: actual_year - max_age, max: actual_year})))
 document.body.appendChild(page)
 },{"..":2}],2:[function(require,module,exports){
 module.exports = InputRange
