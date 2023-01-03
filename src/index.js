@@ -24,16 +24,18 @@ function InputRange ({min = 0, max = 100} = {min: 0, max: 100}) {
 
 const handlers = {
     onkeyup(e) {
-        if (compareWidth(e.target.min, e.target.value)) return
+        if (utils.isWiderThan(e.target.min, e.target.value)) return
         actions.ensureRange(e)
     },
     onleave(e) {
-        if (compareWidth(e.target.min, e.target.value)) return e.target.value = ''
+        if (utils.isWiderThan(e.target.min, e.target.value)) return e.target.value = ''
         actions.ensureRange(e)
     }
 }
-function compareWidth(any1, any2) {
-    return any1.toString().length > any2.toString().length
+const utils = {
+    isWiderThan(any1, any2) {
+        return any1.toString().length > any2.toString().length
+    }
 }
 const actions = {
     ensureRange(e) {
