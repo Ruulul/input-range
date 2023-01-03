@@ -1,6 +1,6 @@
 {
   "name": "@v142857/input-range",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "input component from WizardAmigos playlist",
   "main": "src/index.js",
   "scripts": {
