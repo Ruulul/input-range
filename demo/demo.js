@@ -1,4 +1,4 @@
-const InputRange = require('..')
+const InputRange = require('@v142857/input-range')
 
 const page = document.createElement('div')
 page.innerHTML = `

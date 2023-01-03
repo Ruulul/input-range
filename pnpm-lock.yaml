@@ -1,14 +1,22 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@v142857/input-range': ^0.0.1
   browserify: ^17.0.0
   budo: ^11.8.4
+
+dependencies:
+  '@v142857/input-range': 0.0.1
 
 devDependencies:
   browserify: 17.0.0
   budo: 11.8.4
 
 packages:
+
+  /@v142857/input-range/0.0.1:
+    resolution: {integrity: sha512-0OEN/TAR97mpMnglX85Q6uRUAiDVARNCs57blKZIFql8ZTZQ9K+nMVwmRsjHXJv8zeJkdWrBvhNngRsf1Hmasw==}
+    dev: false
 
   /JSONStream/1.3.5:
     resolution: {integrity: sha512-E+iruNOY8VV9s4JEbe1aNEm6MiszPRr/UfcHMz0TQh1BXSxHK+ASV1R6W4HpjBhSeS+54PIsAMCBmwD06LLsqQ==}

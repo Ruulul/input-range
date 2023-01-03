@@ -14,5 +14,8 @@
   "devDependencies": {
     "browserify": "^17.0.0",
     "budo": "^11.8.4"
+  },
+  "dependencies": {
+    "@v142857/input-range": "^0.0.1"
   }
 }
