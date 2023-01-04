@@ -1,7 +1,10 @@
 module.exports = InputRange
 
+const id = 'v142857-input-range'
+var count = 0
 function InputRange({ min = 0, max = 100 } = { min: 0, max: 100 }, protocol) {
-    const notify = protocol ? protocol(listen) : undefined
+    const name = `${id}-${count++}`
+    const notify = protocol ? protocol(listen, name) : undefined
     const el = document.createElement('div')
     const shadow = el.attachShadow({ mode: 'closed' })
 
