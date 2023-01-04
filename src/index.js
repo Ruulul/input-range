@@ -2,7 +2,7 @@ module.exports = InputRange
 
 const e = document.createElement.bind(document)
 function InputRange({ min = 0, max = 100 } = { min: 0, max: 100 }, protocol) {
-    const notify = protocol(listen)
+    const notify = protocol ? protocol(listen) : undefined
     const handlers = {
         onkeyup(e) {
             if (utils.isWiderThan(e.target.min, e.target.value)) return
@@ -24,7 +24,7 @@ function InputRange({ min = 0, max = 100 } = { min: 0, max: 100 }, protocol) {
             const val = new Number(el.value)
             if (val > el.max) el.value = el.max
             else if (val < el.min) el.value = el.min
-            if (notify) notify({ type: 'update', data: Number(el.value) })
+            if (notify) notify({ type: 'update', data: { value : Number(el.value) } })
         }
     }
 
