@@ -1,11 +1,8 @@
 module.exports = InputRange
 
-const sheet = new CSSStyleSheet
-sheet.replaceSync(getTheme())
-
 const e = document.createElement.bind(document)
 function InputRange({ min = 0, max = 100 } = { min: 0, max: 100 }, protocol) {
-    const notify = protocol (listen)
+    const notify = protocol(listen)
     const handlers = {
         onkeyup(e) {
             if (utils.isWiderThan(e.target.min, e.target.value)) return
@@ -42,14 +39,20 @@ function InputRange({ min = 0, max = 100 } = { min: 0, max: 100 }, protocol) {
     input.onpointerleave = handlers.onleave
     input.onblur = handlers.onleave
 
-    shadow.appendChild(input)
-    shadow.adoptedStyleSheets = [sheet]
+    const style = e('style')
+    style.textContent = getTheme()
+
+    shadow.appendChild(style, input)
 
     return el
 
     function listen (message) {
-        const { type, data } = message
-        if (type === 'update') input.value = data
+        const { type, data: {value, min, max} = {} } = message
+        if (type === 'update') {
+            if (value) input.value = value
+            if (min) input.min = min
+            if (max) input.max = max
+        }
     }
 }
 
