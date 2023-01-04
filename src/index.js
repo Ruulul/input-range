@@ -2,7 +2,7 @@ module.exports = InputRange
 
 const id = 'v142857-input-range'
 var count = 0
-function InputRange({ min = 0, max = 100 } = { min: 0, max: 100 }, protocol) {
+function InputRange({min, max} = {}, protocol) {
     const name = `${id}-${count++}`
     const notify = protocol(listen, name)
     const el = document.createElement('div')
@@ -12,12 +12,12 @@ function InputRange({ min = 0, max = 100 } = { min: 0, max: 100 }, protocol) {
     Object.assign(input, {
         type: 'number',
         min, max,
+        oninput: respond,
         onkeyup,
-        onpointerleave: onleave,
         onblur: onleave,
     })
-    if (!min) delete input.min
-    if (!max) delete input.max
+    if (!min) input.removeAttribute('min')
+    if (!max) input.removeAttribute('max')
 
     const style = document.createElement('style')
     style.textContent = get_theme()
@@ -34,23 +34,26 @@ function InputRange({ min = 0, max = 100 } = { min: 0, max: 100 }, protocol) {
             if (max) input.max = max
         }
     }
-    function onkeyup(e) {
-        if (is_wider_than(e.target.min, e.target.value)) return
-        ensure_range(e)
+    function respond() {
+        notify({ head: [name], type: 'update', data: { value: Number(input.value) } })
     }
-    function onleave(e) {
-        if (is_wider_than(e.target.min, e.target.value)) return e.target.value = ''
-        ensure_range(e)
+    function onkeyup({ target: el }) {
+        if (el.min && !is_wider_than(el.min, el.value))
+            ensure_range(el)
+        respond()
+    }
+    function onleave({ target: el }) {
+        if (el.min && !is_wider_than(el.min, el.value)) 
+            ensure_range(el)
+        respond()
     }
     function is_wider_than(any1, any2) {
         return any1.toString().length > any2.toString().length
     }
-    function ensure_range(e) {
-        const el = e.target
+    function ensure_range(el) {
         const val = Number(el.value)
         if (val > el.max) el.value = el.max
         else if (val < el.min) el.value = el.min
-        if (notify) notify({ head: [name], type: 'update', data: { value: Number(el.value) } })
     }
 }
 
