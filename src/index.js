@@ -4,7 +4,8 @@ const sheet = new CSSStyleSheet
 sheet.replaceSync(getTheme())
 
 const e = document.createElement.bind(document)
-function InputRange({ min = 0, max = 100 } = { min: 0, max: 100 }, notify) {
+function InputRange({ min = 0, max = 100 } = { min: 0, max: 100 }, protocol) {
+    const notify = protocol (listen)
     const handlers = {
         onkeyup(e) {
             if (utils.isWiderThan(e.target.min, e.target.value)) return
@@ -26,7 +27,7 @@ function InputRange({ min = 0, max = 100 } = { min: 0, max: 100 }, notify) {
             const val = new Number(el.value)
             if (val > el.max) el.value = el.max
             else if (val < el.min) el.value = el.min
-            if (notify) notify({ type: 'update', body: el.value })
+            if (notify) notify({ type: 'update', data: Number(el.value) })
         }
     }
 
@@ -45,6 +46,11 @@ function InputRange({ min = 0, max = 100 } = { min: 0, max: 100 }, notify) {
     shadow.adoptedStyleSheets = [sheet]
 
     return el
+
+    function listen (message) {
+        const { type, data } = message
+        if (type === 'update') input.value = data
+    }
 }
 
 function getTheme() {
