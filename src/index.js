@@ -50,7 +50,7 @@ function InputRange({ min = 0, max = 100 } = { min: 0, max: 100 }, protocol) {
         const val = Number(el.value)
         if (val > el.max) el.value = el.max
         else if (val < el.min) el.value = el.min
-        if (notify) notify({ type: 'update', data: { value: Number(el.value) } })
+        if (notify) notify({ head: [name], type: 'update', data: { value: Number(el.value) } })
     }
 }
 
