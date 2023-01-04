@@ -1,62 +1,57 @@
 module.exports = InputRange
 
-const e = document.createElement.bind(document)
 function InputRange({ min = 0, max = 100 } = { min: 0, max: 100 }, protocol) {
     const notify = protocol ? protocol(listen) : undefined
-    const handlers = {
-        onkeyup(e) {
-            if (utils.isWiderThan(e.target.min, e.target.value)) return
-            actions.ensureRange(e)
-        },
-        onleave(e) {
-            if (utils.isWiderThan(e.target.min, e.target.value)) return e.target.value = ''
-            actions.ensureRange(e)
-        }
-    }
-    const utils = {
-        isWiderThan(any1, any2) {
-            return any1.toString().length > any2.toString().length
-        }
-    }
-    const actions = {
-        ensureRange(e) {
-            const el = e.target
-            const val = new Number(el.value)
-            if (val > el.max) el.value = el.max
-            else if (val < el.min) el.value = el.min
-            if (notify) notify({ type: 'update', data: { value : Number(el.value) } })
-        }
-    }
-
-    const el = e('div')
+    const el = document.createElement('div')
     const shadow = el.attachShadow({ mode: 'closed' })
 
-    const input = e('input')
-    input.type = 'number'
-    input.min = min
-    input.max = max
-    input.onkeyup = handlers.onkeyup
-    input.onpointerleave = handlers.onleave
-    input.onblur = handlers.onleave
+    const input = document.createElement('input')
+    Object.assign(input, {
+        type: 'number',
+        min, max,
+        onkeyup,
+        onpointerleave: onleave,
+        onblur: onleave,
+    })
+    if (!min) delete input.min
+    if (!max) delete input.max
 
-    const style = e('style')
-    style.textContent = getTheme()
+    const style = document.createElement('style')
+    style.textContent = get_theme()
 
     shadow.append(style, input)
 
     return el
 
-    function listen (message) {
-        const { type, data: {value, min, max} = {} } = message
+    function listen(message) {
+        const { type, data: { value, min, max } = {} } = message
         if (type === 'update') {
             if (value) input.value = value
             if (min) input.min = min
             if (max) input.max = max
         }
     }
+    function onkeyup(e) {
+        if (is_wider_than(e.target.min, e.target.value)) return
+        ensure_range(e)
+    }
+    function onleave(e) {
+        if (is_wider_than(e.target.min, e.target.value)) return e.target.value = ''
+        ensure_range(e)
+    }
+    function is_wider_than(any1, any2) {
+        return any1.toString().length > any2.toString().length
+    }
+    function ensure_range(e) {
+        const el = e.target
+        const val = Number(el.value)
+        if (val > el.max) el.value = el.max
+        else if (val < el.min) el.value = el.min
+        if (notify) notify({ type: 'update', data: { value: Number(el.value) } })
+    }
 }
 
-function getTheme() {
+function get_theme() {
     return `
         input {
             padding: 0.5em 1em;
