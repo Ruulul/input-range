@@ -42,7 +42,7 @@ function InputRange({ min = 0, max = 100 } = { min: 0, max: 100 }, protocol) {
     const style = e('style')
     style.textContent = getTheme()
 
-    shadow.appendChild(style, input)
+    shadow.append(style, input)
 
     return el
 
